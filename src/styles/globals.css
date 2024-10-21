@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:focus,
+button:focus,
+textarea:focus {
+  outline: none;
+}
+
+input[type="number"]:focus {
+  outline: none;
+}
+
+input[type="number"] {
+  font-size: 16px;
+  font-weight: 500;
+  color: #03050f;
+}
+
+@layer components {
+  .label-input {
+    @apply absolute h-[56px] text-sm font-semibold text-black dark:text-black duration-300 transform -translate-y-0 scale-75 top-[3px] z-10 origin-[0] dark:bg-gray-900 px-0 peer-focus:px-0 peer-focus:text-[#5E6488] peer-focus:dark:text-[#5E6488] peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-[1.6rem] peer-focus:top-[3px] peer-focus:scale-75 peer-focus:-translate-y-0 left-[-20px];
+  }
+
+  .label-input-label {
+    @apply absolute h-[56px] text-sm font-semibold text-black dark:text-black duration-300 transform -translate-y-0 scale-75 top-[3px] z-10 origin-[0] dark:bg-gray-900 px-0 peer-focus:px-0 peer-focus:text-[#A87BF7] peer-focus:dark:text-[#A87BF7] peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-[1.6rem] peer-focus:top-[3px] peer-focus:scale-75 peer-focus:-translate-y-0 left-[-3px];
+  }
+
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"]:not(input[id="scale-input"]):not(
+      input[id="rotate-input"]
+    )::-webkit-outer-spin-button,
+  input[type="number"]:not(input[id="rotate-input"]):not(
+      input[id="scale-input"]
+    )::-webkit-inner-spin-button {
+    @apply appearance-none;
+  }
+
+  .input-group {
+    @apply relative;
+  }
+
+  /* Oculta el checkbox original, pero de manera accesible */
+  .input-checkbox {
+    opacity: 0;
+    position: absolute;
+  }
+
+  /* Estilo para el pseudo-elemento que actuará como el checkbox visual */
+  .input-checkbox + label {
+    position: relative;
+    padding-left: 37px; /* Espacio para el pseudo-elemento */
+    cursor: pointer;
+  }
+
+  /* Crea el pseudo-elemento que se ve como un checkbox */
+  .input-checkbox + label:before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background: #141925;
+    border: 2px solid #2b303b;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 17px; /* Ajusta esto para centrar verticalmente el icono de verificación */
+    margin-top: 2.9px; /* Ajusta esto para centrar verticalmente el icono de verificación */
+  }
+
+  /* Cuando el checkbox original esté marcado, cambia el color de fondo del pseudo-elemento a rojo y muestra el icono de verificación */
+  .input-checkbox:checked + label:before {
+    background-color: #925af5;
+    content: "✓"; /* Icono de verificación */
+    color: #141925; /* Color del icono de verificación */
+    font-size: 14px; /* Ajusta el tamaño del icono de verificación según sea necesario */
+    border: 2px solid #925af5;
+  }
+}
