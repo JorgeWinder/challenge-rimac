@@ -1,2 +1,5 @@
 export { Header } from './header/header'
 export { Radio } from './radio/radio'
+export { Progress } from './progress/progress'
+export { Back } from './back/back'
+export { Step } from './step/step'

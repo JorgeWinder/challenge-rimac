@@ -3,19 +3,47 @@ import Button from '@app/features/ui/components/button/button'
 import { Header } from '@app/features/ui/components/'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useForm } from "react-hook-form"
+
+import { useFormContext } from '@app/features/contacts/contexts'
+
+interface FormData {
+    dni: number;
+    celular: number;
+    price: number;
+    name: string;
+}
+
 
 const Cotizar = () => {
+    const { register, setValue, watch, handleSubmit, reset, formState: { errors } } = useForm<FormData>()
     const router = useRouter()
 
-    const handleClick = () => {
-        router.push('/planes')
+    const { formData, setFormData } = useFormContext()
+
+    const onSubmit = (data: FormData) => {
+        // Redireccionar a la siguiente página si formulario no tiene errores
+        if (Object.keys(errors).length === 0) {
+            // Guardar datos en el contexto
+            setFormData(data)
+            router.push('/planes')
+        }
     }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: parseInt(value) || 0
+        });
+        console.log(value)
+    };
 
     return (
         <>
             <Image src='/blur-asset-1.svg' alt='logo' width={352} height={304} className='lg:hidden block h-[304px] absolute right-0' />
             <Image src='/blur-asset-2.svg' alt='logo' width={352} height={304} className='lg:hidden block h-[304px] absolute left-[-50px] bottom-[0px]' />
-            
+
             <Image src='/blur-asset1.svg' alt='logo' width={352} height={1088} className='hidden lg:block h-[100vh] absolute right-0 top-0' />
             <Image src='/blur-asset2.svg' alt='logo' width={352} height={1088} className='hidden lg:block h-[100vh] absolute left-0 top-0' />
 
@@ -41,7 +69,7 @@ const Cotizar = () => {
 
                     <div className="bg-black h-[1px] flex pb-[1px] opacity-20 lg:hidden"></div>
 
-                    <div className='flex flex-col gap-6 lg:w-[352px]'>
+                    <form className='flex flex-col gap-6 lg:w-[352px]' onSubmit={handleSubmit(onSubmit)}>
                         <p className='font-bold text-[14px]'>
                             Tú eliges cuánto pagar. Ingresa tus datos, cotiza y recibe nuestra asesoría, 100% online.
                         </p>
@@ -60,7 +88,7 @@ const Cotizar = () => {
                                         autoComplete="off"
                                         placeholder=""
                                         style={{ paddingLeft: '5px', marginTop: '3px' }}
-                                        required
+                                        {...register('dni', { required: true, onChange: handleChange })}
                                     />
                                     <label
                                         htmlFor="dni"
@@ -69,7 +97,9 @@ const Cotizar = () => {
                                         Nro. de documento
                                     </label>
                                 </div>
+
                             </div>
+                            {errors.dni && <p style={{ color: 'red', fontSize: '13px', marginTop: '-15px' }}>*Este campo es requerido</p>}
 
                             <div className='w-full flex rounded-lg border-[#5E6488] border-[1px] px-4 py-2 input-group'>
                                 <input
@@ -79,7 +109,7 @@ const Cotizar = () => {
                                     autoComplete="off"
                                     placeholder=""
                                     style={{ paddingLeft: '5px', marginTop: '3px' }}
-                                    required
+                                    {...register('celular', { required: true, onChange: handleChange })}
                                 />
                                 <label
                                     htmlFor="celular"
@@ -89,6 +119,7 @@ const Cotizar = () => {
                                 </label>
                             </div>
                         </div>
+                        {errors.celular && <p style={{ color: 'red', fontSize: '13px', marginTop: '-15px' }}>*El número de contacto es requerido</p>}
 
 
                         <div className='flex flex-col gap-4'>
@@ -138,10 +169,10 @@ const Cotizar = () => {
 
                         </div>
 
-                        <Button label='Cotiza, aquí' onClick={handleClick} />
+                        {/* <Button label='Cotiza, aquí' onClick={handleClick} /> */}
+                        <Button label='Cotiza, aquí' type='submit' />
 
-
-                    </div>
+                    </form>
 
                 </div>
 

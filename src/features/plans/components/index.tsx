@@ -1,0 +1,1 @@
+export { PlansCard } from './plans-card/plans-card';

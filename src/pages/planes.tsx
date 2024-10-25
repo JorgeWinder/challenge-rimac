@@ -1,43 +1,104 @@
-import React from 'react'
-import { Header, Radio } from '@app/features/ui/components/'
+import React, { useEffect, useState } from 'react'
+import { Header, Radio, Back, Step } from '@app/features/ui/components/'
+import { PlansCard } from '@app/features/plans/components/'
 import Image from 'next/image'
+// import { useRouter } from 'next/router'
+
+import axios from 'axios'
+
+type userProps = {
+  name?: string
+  lastName?: string
+  birthDay?: string
+}
 
 const Planes = () => {
+  // const router = useRouter()
+  const [ plans, setPlans ] = useState([])
+  const [ usuario, setUsuario ] = useState<userProps>()
+
+  // Calcular edad
+  const calcularEdad = (birthDay: string) => {
+    const hoy = new Date();
+    const fechaNacimiento = new Date(birthDay);
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+  
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+      edad--;
+    }
+  
+    return edad;
+  };
+
+  // Listar los planes de seguros de la api
+  const getPlanes = async (descuento: number) => {
+    return await axios.get(`${process.env.NEXT_PUBLIC_URI_API}/plans.json`)
+      .then(response => {
+        const birthDay = usuario?.birthDay;
+
+        if (birthDay) {
+          const age = calcularEdad(birthDay)
+
+          // Filtrar los planes por edad mayor e igual a 'age'
+          const planes = response.data.list.filter((plan: any) => plan.age >= age)
+          // Aplicar descuento
+          planes.forEach((plan: any) => {
+            plan.price = plan.price - (plan.price * descuento / 100)
+          })
+
+          setPlans(planes)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  // Listar los usaruios de la api
+  const getUsuarios = async () => {
+    return await axios.get(`${process.env.NEXT_PUBLIC_URI_API}/user.json`)
+      .then(response => {
+        setUsuario(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getUsuarios();
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className='bg-[#FAFBFF] h-screen'>
+    <div className='bg-[#FAFBFF] h-full'>
       <Header />
 
-      <div className='h-[56px] w-full bg-[#EDEFFC] flex items-center justify-center'>
-        <div className='flex gap-4'>
-          <Image src='/paso1.svg' alt='' width={24} height={24} />
-          <span className='font-bold text-[16px]'>Planes y coberturas</span>
-          <Image src='/3p.svg' alt='' width={32} height={24} />
+      {/* Steps */}
+      <Step step={1} />
 
-          <Image src='/paso2-off.svg' alt='' width={24} height={24} />
-          <span className='font-bold text-[16px] text-[#7981B2]'>Resumen</span>
-        </div>
-      </div>
+      {/* Botón back */}
+      <Back />
 
-      <div className='gap-2 lg:flex absolute top-[160px] left-[216px] hidden'>
-        <Image src='/back.svg' alt='' width={20} height={20} />
-        <span className='font-bold text-lg text-[#4F4FFF]'>Volver</span>
-      </div>
-
-      <div className='flex flex-col gap-8'>
+      <div className='flex flex-col gap-8 items-center lg:mt-24 mt-[31px]'>
 
         <div className='px-6 text-left lg:text-center flex flex-col gap-2'>
           <h1 className='font-bold text-[28px] text-[#141938] leading-9'>Rocío ¿Para quién deseas cotizar?</h1>
           <span className='font-normal text-[#141938]'>Selecciona la opción que se ajuste más a tus necesidades.</span>
         </div>
 
-        <div className='flex flex-col gap-6 px-6'>
+        <div className='flex flex-col lg:flex-row gap-6 px-6'>
 
           <div
-            className='rounded-3xl bg-[#FFFFFF] py-10 px-6 flex flex-col shadow-md gap-4 relative cursor-pointer'
+            className='lg:w-[256px] w-full rounded-3xl bg-[#FFFFFF] py-10 px-6 flex flex-col shadow-md gap-4 relative cursor-pointer'
             onClick={(e) => {
               const allDivs = document.querySelectorAll('.rounded-3xl');
               allDivs.forEach(div => {
-                (div as HTMLElement).style.backgroundColor = 'transparent';
+                (div as HTMLElement).style.backgroundColor = 'white';
                 (div as HTMLElement).classList.remove('border-[3px]');
                 (div as HTMLElement).classList.remove('border-[#141938]');
               });
@@ -49,6 +110,8 @@ const Planes = () => {
               if (radioElement) {
                 radioElement.checked = true;
               }
+
+              getPlanes(0)
             }}
           >
             <div className="absolute top-5 right-2">
@@ -66,11 +129,11 @@ const Planes = () => {
 
 
           <div
-            className='rounded-3xl bg-[#FFFFFF] py-10 px-6 flex flex-col shadow-md gap-4 relative cursor-pointer'
+            className='lg:w-[256px] w-full rounded-3xl bg-[#FFFFFF] py-10 px-6 flex flex-col shadow-md gap-4 relative cursor-pointer'
             onClick={(e) => {
               const allDivs = document.querySelectorAll('.rounded-3xl');
               allDivs.forEach(div => {
-                (div as HTMLElement).style.backgroundColor = 'transparent';
+                (div as HTMLElement).style.backgroundColor = 'white';
                 (div as HTMLElement).classList.remove('border-[3px]');
                 (div as HTMLElement).classList.remove('border-[#141938]');
               });
@@ -82,6 +145,8 @@ const Planes = () => {
               if (radioElement) {
                 radioElement.checked = true;
               }
+
+              getPlanes(5)
             }}
           >
             <div className="absolute top-5 right-2">
@@ -100,30 +165,14 @@ const Planes = () => {
 
         </div>
 
-        <div className='flex flex-col gap-6 px-6'>
-
+        <div className='flex lg:flex-row flex-col gap-6 px-6'>
           {/* Planes */}
-          <div className='rounded-3xl bg-[#FFFFFF] py-10 px-6 flex flex-col shadow-md gap-4 relative cursor-pointer'>
-            
-            <div className='flex flex-col'>
-              <div className='flex justify-between'>
-                <span className='font-bold text-2xl'>Plan en Casa</span>
-                <Image src='/home.svg' alt='' width={56} height={56}/>
-              </div>
-              <div className='flex flex-col'>
-                <span className='text-xs text-[#7981B2] font-bold'>COSTO DEL PLAN</span>
-                <span className='text-xl font-bold'>$39 al mes</span>
-              </div>
-            </div>
-
-          </div>
+          <PlansCard plans={plans} />
 
         </div>
 
 
       </div>
-
-
 
 
     </div>

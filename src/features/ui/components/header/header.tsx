@@ -1,10 +1,17 @@
 import React from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 export const Header = () => {
+    const router = useRouter()
+
+    const handleGoHome = () => {
+        router.push('/cotizar')
+    }
+
     return (
         <div className='h-[56px] lg:h-[64px] py-3 px-6 flex justify-between z-[9999] relative'>
-            <Image src='/logo.svg' alt='logo' width={65} height={32} />
+            <Image src='/logo.svg' alt='logo' width={65} height={32} onClick={handleGoHome} className='cursor-pointer'/>
 
             <div className='flex items-center gap-4'>
                 <span className='hidden lg:flex text-xs font-bold'>
