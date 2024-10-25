@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Header, Radio, Back, Step } from '@app/features/ui/components/'
 import { PlansCard } from '@app/features/plans/components/'
 import Image from 'next/image'
-// import { useRouter } from 'next/router'
 
 import axios from 'axios'
 
@@ -11,6 +10,14 @@ type userProps = {
   lastName?: string
   birthDay?: string
 }
+
+type PlanProps = {
+  name: string
+  age: number
+  price: number
+  description: string[]
+}
+
 
 const Planes = () => {
   // const router = useRouter()
@@ -41,9 +48,9 @@ const Planes = () => {
           const age = calcularEdad(birthDay)
 
           // Filtrar los planes por edad mayor e igual a 'age'
-          const planes = response.data.list.filter((plan: any) => plan.age >= age)
+          const planes = response.data.list.filter((plan: PlanProps) => plan.age >= age)
           // Aplicar descuento
-          planes.forEach((plan: any) => {
+          planes.forEach((plan: PlanProps) => {
             plan.price = plan.price - (plan.price * descuento / 100)
           })
 

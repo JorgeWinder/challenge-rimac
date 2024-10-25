@@ -16,7 +16,7 @@ interface FormData {
 
 
 const Cotizar = () => {
-    const { register, setValue, watch, handleSubmit, reset, formState: { errors } } = useForm<FormData>()
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
     const router = useRouter()
 
     const { formData, setFormData } = useFormContext()
