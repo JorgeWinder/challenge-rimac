@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Header, Radio, Back, Step } from '@app/features/ui/components/'
 import { PlansCard } from '@app/features/plans/components/'
-import { useFormContext } from '@app/features/contacts/contexts'
 import Image from 'next/image'
 
 import axios from 'axios'
@@ -24,7 +23,6 @@ const Planes = () => {
   // const router = useRouter()
   const [plans, setPlans] = useState([])
   const [usuario, setUsuario] = useState<userProps>()
-  const { formData, setFormData } = useFormContext()
 
   // Calcular edad
   const calcularEdad = (birthDay: string) => {
@@ -79,13 +77,9 @@ const Planes = () => {
   useEffect(() => {
     const fetchData = async () => {
       await getUsuarios();
-      setFormData({
-        ...formData,
-        fullName: (usuario?.name + ' ' + usuario?.lastName) || ''
-      })
     };
     fetchData();
-  }, [formData, setFormData, usuario?.name, usuario?.lastName]);
+  }, []);
 
 
   return (
@@ -181,7 +175,7 @@ const Planes = () => {
 
         <div className='flex lg:flex-row flex-col gap-6 px-6'>
           {/* Planes */}
-          <PlansCard plans={plans} />
+          <PlansCard plans={plans} fullName={usuario?.name + ' ' + usuario?.lastName} />
 
         </div>
 

@@ -32,7 +32,7 @@ export const Step: React.FC<StepProps> = (props) => {
                 </div>
 
                 <div className='lg:hidden gap-4 flex py-4 px-6 items-center'>
-                    <div onClick={handleBack} >
+                    <div onClick={handleBack}  className='w-auto'>
                         <Image src='/back-circle.svg' width={24} height={24} alt='' />
                     </div>
                     <span className='font-bold text-[12px] w-[30%]'>PASO 1 DE 2</span>
@@ -56,7 +56,9 @@ export const Step: React.FC<StepProps> = (props) => {
                 </div>
 
                 <div className='lg:hidden gap-4 flex py-4 px-6 items-center'>
-                    <Image src='/back-circle.svg' width={24} height={24} alt='' />
+                    <div onClick={handleBack}  className='w-auto'>
+                        <Image src='/back-circle.svg' width={24} height={24} alt='' />
+                    </div>
                     <span className='font-bold text-[12px] w-[30%]'>PASO 2 DE 2</span>
                     <Progress percentage={50} />
                 </div>
