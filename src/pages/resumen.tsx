@@ -1,8 +1,8 @@
 import React from 'react'
 import { Back, Header, Step } from '@app/features/ui/components/'
+import { useFormContext } from '@app/features/contacts/contexts'
 import Image from 'next/image'
 
-import { useFormContext } from '@app/features/contacts/contexts'
 
 const Resumen = () => {
 
@@ -34,7 +34,7 @@ const Resumen = () => {
               <span className='text-[10px] font-bold uppercase'>Precios calculados para:</span>
               <div className='flex gap-3'>
                 <Image src='/person.svg' alt='' width={24} height={24} />
-                <span className='text-[20px] font-bold'>Rocio Miranda Díaz</span>
+                <span className='text-[20px] font-bold'>{formData.fullName}</span>
               </div>
             </div>
 

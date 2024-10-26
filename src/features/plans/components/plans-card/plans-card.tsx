@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import router from 'next/router'
 import { useFormContext } from '@app/features/contacts/contexts'
@@ -28,10 +28,6 @@ export const PlansCard: React.FC<PlansCardProps> = ({ plans }) => {
         })
         router.push('/resumen')
     }
-
-    useEffect(() => {
-        console.log('card', plans)
-    }, [plans])
 
     return (
         <>

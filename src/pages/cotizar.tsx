@@ -10,6 +10,7 @@ import { useFormContext } from '@app/features/contacts/contexts'
 interface FormData {
     dni: number;
     celular: number;
+    fullName: string;
     price: number;
     name: string;
 }
@@ -36,7 +37,6 @@ const Cotizar = () => {
             ...formData,
             [name]: parseInt(value) || 0
         });
-        console.log(value)
     };
 
     return (
@@ -59,7 +59,7 @@ const Cotizar = () => {
                 <div className='flex flex-col gap-6 px-6 w-full lg:w-[55%] lg:items-center'>
                     <div className='flex w-full items-center justify-start lg:w-[352px]'>
                         <div className='flex flex-col w-[60%] lg:w-full py-[30px] gap-2'>
-                            <div className='bg-[#00F4E2] py-[2px] px-[8px] font-bold text-xs rounded text-center w-fit'>Seguro Salud Flexible</div>
+                            <div className='bg-transparent bg-gradient-to-r from-[#00F4E2] via-[#65f2c5] to-[#00FF7F] py-[2px] px-[8px] font-bold text-xs rounded text-center w-fit'>Seguro Salud Flexible</div>
                             <span className='font-bold text-[28px] w-[188px] leading-9'>Creado para <br /> ti y tu familia</span>
                         </div>
                         <div className='w-[40%] lg:hidden'>
@@ -89,6 +89,7 @@ const Cotizar = () => {
                                         placeholder=""
                                         style={{ paddingLeft: '5px', marginTop: '3px' }}
                                         {...register('dni', { required: true, onChange: handleChange })}
+                                        onClick={(e) => e.currentTarget.select()}
                                     />
                                     <label
                                         htmlFor="dni"
@@ -110,6 +111,7 @@ const Cotizar = () => {
                                     placeholder=""
                                     style={{ paddingLeft: '5px', marginTop: '3px' }}
                                     {...register('celular', { required: true, onChange: handleChange })}
+                                    onClick={(e) => e.currentTarget.select()}
                                 />
                                 <label
                                     htmlFor="celular"
@@ -163,13 +165,13 @@ const Cotizar = () => {
                                 </label>
                             </label>
 
-                            <span className='font-bold text-xs underline underline-offset-4'>
+                            <span className='font-bold text-xs underline underline-offset-4 cursor-pointer'>
                                 Aplican Términos y Condiciones.
                             </span>
 
                         </div>
 
-                        {/* <Button label='Cotiza, aquí' onClick={handleClick} /> */}
+                        {/* Botón de envio de datos */}
                         <Button label='Cotiza, aquí' type='submit' />
 
                     </form>
@@ -184,7 +186,7 @@ const Cotizar = () => {
                 <Image src='/logo-white.svg' alt='' width={138} height={20} className='h-[20px] lg:hidden' />
                 <Image src='/logo-white-v.svg' alt='' width={100} height={42} className='h-[42px] lg:block hidden' />
                 <div className="bg-white h-[1px] flex pb-[1px] opacity-40 w-full lg:hidden"></div>
-                <span className='text-white font-medium text-[12px]'>© 2023 RIMAC Seguros y Reaseguros.</span>
+                <span className='text-white font-medium text-[12px]'>© 2024 RIMAC Seguros y Reaseguros.</span>
             </div>
 
 
